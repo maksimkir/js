@@ -1,6 +1,8 @@
-let button = document.getElementById("myButton");
-let text = document.getElementById("myText");
+const myHeader = document.querySelector('h1');
 
-button.onclick = function() {
-    text.innerHTML = "Hello world!";
-}
+myHeader.onmousemove = function() {
+
+    console.warn("Максим"); 
+    
+    myHeader.innerText = "Hello world!";
+};
