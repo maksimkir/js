@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Лабораторна робота №2</title>
+</head>
+<body>
+
+    <section>
+        <h2>2. Логічні оператори</h2>
+        <input type="number" id="rangeNum" placeholder="Введіть число">
+        <button onclick="checkRange()">Перевірити діапазон</button>
+        <p id="rangeRes"></p>
+
+        <p>Стан змінної: <strong id="stateValue">true</strong></p>
+        <button onclick="toggleState()">Змінити стан (NOT)</button>
+    </section>
+
+    <hr>
+
+    <section>
+        <h2>3. Оцінка студента</h2>
+        <input type="number" id="gradeInput" placeholder="74">
+        <button onclick="processGrade()">Перевірити</button>
+        <p id="gradeRes"></p>
+
+        <h2>Визначення сезону</h2>
+        <input type="number" id="monthInput" placeholder="4">
+        <button onclick="processSeason()">Яка пора року?</button>
+        <p id="seasonRes"></p>
+    </section>
+
+    <script src="script.js"></script>
+</body>
+</html>
