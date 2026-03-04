@@ -6,30 +6,20 @@
 </head>
 <body>
 
-    <section>
-        <h2>2. Логічні оператори</h2>
-        <input type="number" id="rangeNum" placeholder="Введіть число">
-        <button onclick="checkRange()">Перевірити діапазон</button>
-        <p id="rangeRes"></p>
-
-        <p>Стан змінної: <strong id="stateValue">true</strong></p>
-        <button onclick="toggleState()">Змінити стан (NOT)</button>
-    </section>
+<div class="container">
+    <h2>Оцінка:</h2>
+    <input type="number" id="gradeInput" placeholder="Введіть бал (0-100)">
+    <button onclick="handleGrade()">Перевірити бал</button>
+    <div id="gradeOut" class="result"></div>
 
     <hr>
 
-    <section>
-        <h2>3. Оцінка студента</h2>
-        <input type="number" id="gradeInput" placeholder="74">
-        <button onclick="processGrade()">Перевірити</button>
-        <p id="gradeRes"></p>
+    <h2>Сезон:</h2>
+    <input type="number" id="monthInput" placeholder="Номер місяця (1-12)">
+    <button onclick="handleSeason()">Визначити сезон</button>
+    <div id="seasonOut" class="result"></div>
+</div>
 
-        <h2>Визначення сезону</h2>
-        <input type="number" id="monthInput" placeholder="4">
-        <button onclick="processSeason()">Яка пора року?</button>
-        <p id="seasonRes"></p>
-    </section>
-
-    <script src="script.js"></script>
+<script src="script3.js"></script>
 </body>
 </html>
