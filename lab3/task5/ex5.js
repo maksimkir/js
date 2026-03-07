@@ -9,4 +9,4 @@ const task5 = (text) => {
     console.log(`Кількість голосних у рядку "${text}" = ${count}`);
 };
 
-task5("Програмування на Node.js");
+task5(":");
