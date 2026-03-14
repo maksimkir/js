@@ -1,6 +1,6 @@
-function task6(base, exponent) {
+function ex6(base, exponent) {
     let result = Math.pow(base, exponent);
     console.log(`${base} у степені ${exponent} = ${result}`);
 }
 
-task6(2, 6); 
+ex6(2, 6);

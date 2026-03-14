@@ -1,4 +1,4 @@
-function task4(arr) {
+function ex4(arr) {
     let sum = 0;
     for (let i = 0; i < arr.length; i++) {
         if (arr[i] % 2 === 0) {
@@ -8,4 +8,4 @@ function task4(arr) {
     console.log("Сума парних чисел у масиві [" + arr + "] = " + sum);
 }
 
-task4([1, 2, 3, 4, 5, 6, 10]);
+ex4([1, 2, 3, 4, 5, 6, 10]);

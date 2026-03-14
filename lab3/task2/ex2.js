@@ -1,4 +1,4 @@
-function task2(number) {
+function ex2(number) {
     let factorial = 1;
     for (let i = 1; i <= number; i++) {
         factorial *= i;
@@ -6,4 +6,4 @@ function task2(number) {
     console.log(`Факторіал числа: ${number} = ${factorial}`);
 }
 
-task2(5); 
+ex2(5);

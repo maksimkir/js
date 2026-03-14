@@ -1,4 +1,4 @@
-function task1() {
+function ex1() {
     let sum = 0;
     let i = 1;
     while (i <= 50) {
@@ -8,4 +8,4 @@ function task1() {
     console.log(" Сума перших 50 натуральних чисел = " + sum);
 }
 
-task1(); 
+ex1(); 

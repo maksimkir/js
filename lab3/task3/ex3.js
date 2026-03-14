@@ -1,4 +1,4 @@
-function task3(monthNumber) {
+function ex3(monthNumber) {
     let monthName;
     switch (monthNumber) {
         case 1: monthName = "Січень"; break;
@@ -18,4 +18,4 @@ function task3(monthNumber) {
     console.log(`Місяць №${monthNumber} — це ${monthName}`);
 }
 
-task3(3); 
+ex3(3); 

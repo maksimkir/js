@@ -1,4 +1,4 @@
-const task5 = (text) => {
+const ex5 = (text) => {
     const vowels = "aeiouyаеєиіїоуюяAEIOUYАЕЄИІЇОУЮЯ";
     let count = 0;
     for (let char of text) {
@@ -9,4 +9,4 @@ const task5 = (text) => {
     console.log(`Кількість голосних у рядку "${text}" = ${count}`);
 };
 
-task5(":");
+ex5(":");
