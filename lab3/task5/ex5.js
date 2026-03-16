@@ -9,4 +9,4 @@ const ex5 = (text) => {
     console.log(`Кількість голосних у рядку "${text}" = ${count}`);
 };
 
-ex5(":");
+ex5("Hello");
