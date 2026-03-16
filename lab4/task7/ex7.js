@@ -6,9 +6,9 @@ function ex7() {
   };
 
   student.subjects = ["Математика", "Фізика", "Програмування", "Англійська"];
-  console.log("Завдання 7 | Після додавання предметів:", student);
+  console.log("Після додавання предметів:", student);
  
   delete student.age;
-  console.log("Завдання 7 | Після видалення 'age':", student);
+  console.log("Після видалення 'age':", student);
 }
 ex7();
