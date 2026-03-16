@@ -79,7 +79,7 @@ function ex6() {
     addBook("Місто", "Валер'ян Підмогильний", "роман", 310);
     removeBook("Захар Беркут");
     console.log(
-      "Завдання 6 | Книги Лесі Українки:",
+      "Книги Лесі Українки:",
       findBooksByAuthor("Леся Українка")
     );
     toggleBookAvailability("Кобзар", true);       //  взяли
