@@ -18,4 +18,4 @@ function ex3(monthNumber) {
     console.log(`Місяць №${monthNumber} — це ${monthName}`);
 }
 
-ex3(3); 
+ex3(11); 
