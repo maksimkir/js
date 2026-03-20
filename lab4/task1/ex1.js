@@ -1,4 +1,4 @@
-// ===== Завдання 1 =====
+// Завдання 1
 function ex1() {
   const fruits = ["яблуко", "банан", "апельсин", "груша", "виноград", "манго"];
 
@@ -15,7 +15,7 @@ function ex1() {
 
 }
 
-// ===== Завдання 2 =====
+// Завдання 2
 function ex2() {
   const colors = [
     "червоний", "синій", "зелений",
@@ -32,7 +32,7 @@ function ex2() {
   console.log("Рядок після join:", filtered.join(", "));
 }
 
-// ===== Завдання 3 =====
+//  Завдання 3
 function ex3() {
   let employees = [
     { name: "Олег",   age: 35, position: "менеджер"  },
@@ -56,7 +56,7 @@ function ex3() {
   console.log("Після додавання нового працівника:", employees);
 }
 
-// ===== Завдання 4 =====
+// Завдання 4
 function ex4() {
   let students = [
     { name: "Олексій", age: 20, course: 2 },
@@ -80,7 +80,7 @@ function ex4() {
   console.log("Студент 3-го курсу:", students.find((s) => s.course === 3));
 }
 
-// ===== Завдання 5 =====
+// Завдання 5 
 function ex5() {
   let numbers = [3, 7, 2, 8, 5, 1, 6, 4, 9, 10];
 
@@ -97,7 +97,7 @@ function ex5() {
   console.log("Після видалення перших 3 елементів:", numbers);
 }
 
-// ===== Завдання 6 =====
+//  Завдання 6
 function ex6() {
   let books = [
     { title: "Кобзар",              author: "Тарас Шевченко",        genre: "поезія",  pages: 240, isAvailable: true  },
@@ -150,7 +150,7 @@ function ex6() {
   console.log("Статистика бібліотеки:", getBooksStatistics());
 }
 
-// ===== Завдання 7 =====
+//  Завдання 7
 function ex7() {
   const student = { name: "Дмитро", age: 21, course: 3 };
 
@@ -163,5 +163,5 @@ function ex7() {
   console.log("Після видалення 'age':", student);
 }
 
-// Запуск усіх завдань
+
 [ex1, ex2, ex3, ex4, ex5, ex6, ex7].forEach((fn) => fn());
