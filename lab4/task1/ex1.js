@@ -29,7 +29,6 @@ function ex2() {
 
   const filtered = colors.filter((c) => c.includes("синій"));
   console.log("Лише з 'синій':", filtered);
-  console.log("Рядок після join:", filtered.join(", "));
 }
 
 //  Завдання 3
@@ -120,12 +119,13 @@ function ex6() {
   };
 
   const findBooksByAuthor = (author) => books.filter((b) => b.author === author);
+  console.log("Книги Лесі Українки:", findBooksByAuthor("Леся Українка"));
 
   const toggleBookAvailability = (title, isBorrowed) => {
     const book = books.find((b) => b.title === title);
     if (book) {
       book.isAvailable = !isBorrowed;
-      console.log(`"${title}" → Доступно: ${book.isAvailable}`);
+      console.log(`"${title}": ${book.isAvailable}`);
     }
   };
 
@@ -143,7 +143,6 @@ function ex6() {
 
   addBook("Місто", "Валер'ян Підмогильний", "роман", 310);
   removeBook("Захар Беркут");
-  console.log("Книги Лесі Українки:", findBooksByAuthor("Леся Українка"));
   toggleBookAvailability("Кобзар", true);
   toggleBookAvailability("Тіні забутих предків", false);
   sortBooksByPages();
