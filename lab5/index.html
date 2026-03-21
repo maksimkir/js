@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Лабораторна робота №5 - JS</title>
+    <style>
+        body { font-family: sans-serif; line-height: 1.6; padding: 20px; background-color: #f4f4f4; }
+        .section { background: white; padding: 20px; margin-bottom: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        h2 { color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 10px; }
+        
+        /* Завдання 1: Лампочка */
+        #bulb { width: 80px; height: 120px; background: #ddd; margin: 10px auto; border-radius: 50% 50% 40% 40%; transition: 0.3s; border: 2px solid #bbb; }
+        .bulb-on { background: #f1c40f !important; box-shadow: 0 0 30px #f1c40f; border-color: #f39c12 !important; }
+        
+        /* Завдання 2: Світлофор */
+        .traffic-light { width: 60px; background: #333; padding: 15px; border-radius: 10px; margin: 10px 0; }
+        .light { width: 40px; height: 40px; border-radius: 50%; background: #444; margin: 10px auto; transition: 0.3s; }
+        .red.active { background: #ff4d4d; box-shadow: 0 0 15px #ff4d4d; }
+        .yellow.active { background: #ffeb3b; box-shadow: 0 0 15px #ffeb3b; }
+        .green.active { background: #4caf50; box-shadow: 0 0 15px #4caf50; }
+        
+        /* Завдання 3: Годинник */
+        #clock { font-family: 'Courier New', monospace; font-size: 2rem; font-weight: bold; color: #2c3e50; }
+        .blink { animation: blinker 1s linear infinite; }
+        @keyframes blinker { 50% { opacity: 0; } }
+    </style>
+</head>
+<body>
+
+    <h1>Лабораторна робота №5 </h1>
+
+    <div class="section">
+        <h2>Завдання 1: Робота з className та classList</h2>
+        <div id="bulb"></div>
+        <p>Стан: <span id="bulb-status">Вимкнено</span></p>
+        <select id="bulb-select">
+            <option value="standard">Звичайна</option>
+            <option value="energy">Енергозберігаюча</option>
+            <option value="led">Світлодіодна</option>
+        </select>
+        <button onclick="toggleLight()">Вкл/Викл</button>
+        <button onclick="setBrightness()">Яскравість</button>
+    </div>
+
+    <div class="section">
+        <h2>Завдання 2: setTimeout та setInterval</h2>
+        <div class="traffic-light">
+            <div id="red-light" class="light red"></div>
+            <div id="yellow-light" class="light yellow"></div>
+            <div id="green-light" class="light green"></div>
+        </div>
+        <p>Поточний стан: <b id="traffic-desc">Зупинено</b></p>
+        <button onclick="startTraffic()">Запустити цикл</button>
+        <button onclick="manualSwitch()">Наступний стан</button>
+    </div>
+
+    <div class="section">
+        <h2>Завдання 3: Дата та час</h2>
+        <div id="clock">00:00:<span class="blink">00</span></div>
+        <hr>
+        <h4>Зворотний відлік</h4>
+        <input type="datetime-local" id="timer-input">
+        <div id="timer-display">Очікування...</div>
+        <hr>
+        <h4>Календар Дня Народження </h4>
+        <input type="date" id="bday-input" onchange="calcBday()">
+        <div id="bday-result"></div>
+    </div>
+
+    <div class="section">
+        <h2>Завдання 4: Map, Set, WeakMap</h2>
+        <input type="text" id="prod-name" placeholder="Назва">
+        <input type="number" id="prod-price" placeholder="Ціна">
+        <input type="number" id="prod-stock" placeholder="К-сть">
+        <button onclick="uiAddProduct()">Додати</button>
+        <div id="catalog-list"></div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
