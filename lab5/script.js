@@ -25,7 +25,7 @@
         }
 
         // === ЗАВДАННЯ 2: СВІТЛОФОР ===
-        let trafficState = 0; // 0-червоний, 1-жовтий, 2-зелений
+        let trafficState = 0; 
         const lights = ['red-light', 'yellow-light', 'green-light'];
         
         function updateTrafficUI(stateName) {
@@ -40,7 +40,7 @@
             while(true) {
                 updateTrafficUI('red'); await new Promise(r => setTimeout(r, 5000)); 
                 
-                // Жовтий мигає 3 рази [cite: 28]
+                // Жовтий мигає 3 рази 
                 for(let i=0; i<3; i++) {
                     updateTrafficUI('yellow'); await new Promise(r => setTimeout(r, 500));
                     updateTrafficUI('none'); await new Promise(r => setTimeout(r, 500));
@@ -91,6 +91,7 @@
         const catalog = new Map(); 
         const orderHistory = new WeakMap();
 
+       //+
         function uiAddProduct() {
             const name = document.getElementById('prod-name').value;
             const price = document.getElementById('prod-price').value;
@@ -115,7 +116,7 @@
         function buyProduct(id) {
             const item = catalog.get(id);
             if (item && item.stock > 0) {
-                item.stock--;
+                item.stock--;   
                 renderCatalog();
             }
         }
