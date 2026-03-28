@@ -2,7 +2,8 @@
 function ex1() {
   const fruits = ["яблуко", "банан", "апельсин", "груша", "виноград", "манго"];
 
-  console.log("Завдання 1");
+  fruits.push("киві");
+
 
   fruits.pop();
   console.log("Видалення останнього елемента:", fruits);
@@ -53,6 +54,7 @@ function ex3() {
 
   employees.push({ name: "Злата", age: 27, position: "аналітик" });
   console.log("Після додавання нового працівника:", employees);
+
 }
 
 // Завдання 4
@@ -88,12 +90,13 @@ function ex5() {
   console.log("Квадрати чисел:", numbers.map((n) => n ** 2));
   console.log("Парні числа:", numbers.filter((n) => n % 2 === 0));
   console.log("Сума елементів:", numbers.reduce((acc, n) => acc + n, 0));
-
+ 
   numbers = [...[11, 12, 13, 14, 15], ...numbers];
   console.log("Після додавання 5 чисел:", numbers);
 
   numbers.splice(0, 3);
   console.log("Після видалення перших 3 елементів:", numbers);
+  
 }
 
 //  Завдання 6
