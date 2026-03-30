@@ -1,4 +1,4 @@
- // === ЗАВДАННЯ 1: ЛАМПОЧКА ===
+//Лампочка
         let idleTimeout; 
         function toggleLight() {
             const bulb = document.getElementById('bulb');
@@ -11,7 +11,7 @@
 
             clearTimeout(idleTimeout);
             if (isOn) {
-                // Автовимкнення через 10 сек для демонстрації (замість 5 хв) 
+                // Автовимкнення 
                 idleTimeout = setTimeout(() => {
                     bulb.classList.remove('bulb-on');
                     status.innerText = "Вимкнено (таймер)";
@@ -24,7 +24,7 @@
             if (val) document.getElementById('bulb').style.opacity = val;
         }
 
-        // === ЗАВДАННЯ 2: СВІТЛОФОР ===
+        //Світлофор 
         let trafficState = 0; 
         const lights = ['red-light', 'yellow-light', 'green-light'];
         
@@ -56,7 +56,7 @@
             updateTrafficUI(states[trafficState]); 
         }
 
-        // === ЗАВДАННЯ 3: ЧАС ===
+        //Час та таймерн
         setInterval(() => {
             const now = new Date(); 
             const h = String(now.getHours()).padStart(2, '0');
@@ -87,7 +87,7 @@
             document.getElementById('bday-result').innerText = `До дня народження: ${days} днів`;
         }
 
-        // === ЗАВДАННЯ 4: МАГАЗИН ===
+        //Магазин
         const catalog = new Map(); 
         const orderHistory = new WeakMap();
 
