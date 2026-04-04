@@ -1,0 +1,287 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background: #f4f4f4;
+  color: #222;
+}
+
+/* ХЕДЕР */
+header {
+  background: #333;
+  color: #fff;
+  padding: 16px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+header h1 {
+  font-size: 1.3rem;
+}
+
+#total-price {
+  font-size: 1rem;
+}
+
+/* МЕЙН*/
+main {
+  padding: 24px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+/* ФІЛЬТРИ ТА СОРТУВАННЯ*/
+.toolbar {
+  margin-bottom: 35px;
+}
+
+.toolbar-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.toolbar-label {
+  font-weight: bold;
+  font-size: 0.85rem;
+  min-width: 90px;
+}
+
+#filter-buttons {
+  display: flex;     
+  flex-wrap: wrap;   
+  gap: 8px;          
+}
+
+/* КНОПКИ */
+button {
+  padding: 7px 14px;
+  border: 1px solid #999;
+  background: #fff;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 0.85rem;
+}
+
+button:hover {
+  background: #eeeeee;
+}
+
+button.active {
+  background: #333;
+  color: #fff;
+  border-color: #333;
+}
+
+/* ПОРОЖНІЙ СТАН*/
+#empty-msg {
+  display: none;
+  text-align: center;
+  padding: 40px;
+  color: #888;
+  font-size: 1rem;
+}
+
+/* ПІДЛАШТУВАННЯ КАРТОК*/
+#product-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+/* КАРТКИ */
+.product-card {
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  overflow: hidden;
+  animation: fadeIn 0.3s ease;
+}
+
+.product-card img {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+}
+
+.product-info {
+  padding: 12px;
+}
+
+.product-info .id {
+  font-size: 0.72rem;
+  color: #999;
+  margin-bottom: 4px;
+}
+
+.product-info h3 {
+  font-size: 1rem;
+  margin-bottom: 4px;
+}
+
+.product-info .price {
+  font-weight: bold;
+  color: #c0392b;
+  margin-bottom: 4px;
+}
+
+.product-info .category {
+  font-size: 0.8rem;
+  color: #555;
+  margin-bottom: 10px;
+}
+
+.product-actions {
+  display: flex;
+  gap: 6px;
+}
+
+.product-actions button {
+  flex: 1;
+  font-size: 0.8rem;
+}
+
+/* КНОПКА ДОДАТИ */
+#add-btn {
+  display: block;
+  margin: 24px auto 0;
+  padding: 10px 28px;
+  background: #27ae60;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+#add-btn:hover {
+  background: #219150;
+}
+
+/* АНІМАЦІЯ КНОПОК */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeOut {
+  from { opacity: 1; transform: scale(1); }
+  to   { opacity: 0; transform: scale(0.9); }
+}
+
+.product-card.removing {
+  animation: fadeOut 0.3s ease forwards;
+}
+
+/* МОДАЛЬНЕ ВІКНО */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+}
+
+.modal-overlay.open {
+  display: flex;
+}
+
+.modal {
+  background: #fff;
+  padding: 24px;
+  border-radius: 8px;
+  width: min(460px, 95vw);
+}
+
+.modal h2 {
+  margin-bottom: 16px;
+  font-size: 1.2rem;
+}
+
+.form-group {
+  margin-bottom: 12px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 0.85rem;
+  margin-bottom: 4px;
+  font-weight: bold;
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 0.95rem;
+}
+
+.form-group input:invalid:not(:placeholder-shown) {
+  border-color: #e74c3c;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.modal-actions button {
+  flex: 1;
+  padding: 10px;
+  font-size: 0.95rem;
+}
+
+#submit-btn {
+  background: #333;
+  color: #fff;
+  border-color: #333;
+}
+
+#submit-btn:hover {
+  background: #111;
+}
+
+/* СПОВІЩЕННЯ КОРИСТУВАЧА */
+#snackbar {
+  display: none;
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  background: #333;
+  color: #fff;
+  padding: 12px 20px;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  z-index: 200;
+  animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateX(40px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+/* АДАПТИВНІСТЬ */
+@media (max-width: 500px) {
+  header {
+    flex-direction: column;
+    gap: 8px;
+    text-align: center;
+  }
+
+  main {
+    padding: 16px;
+  }
+}
