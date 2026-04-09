@@ -147,7 +147,7 @@ const openEditModal = (id) => {
   openModal(true);
 };
 
-/* ── РЕНДЕР КАРТОК ───────────────────────── */
+/* РЕНДЕР КАРТОК */
 const createCard = (p) => {
   const card = document.createElement('div');
   card.className = 'product-card';
@@ -242,7 +242,7 @@ const deleteWithAnimation = (id) => {
   }
 };
 
-/* ── ОБРОБНИКИ ПОДІЙ ─────────────────────── */
+/* ОБРОБНИКИ ПОДІЙ */
 document.getElementById('add-btn').addEventListener('click', () => openModal(false));
 
 document.getElementById('cancel-btn').addEventListener('click', closeModal);

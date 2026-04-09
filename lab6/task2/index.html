@@ -1,91 +1,483 @@
 <!DOCTYPE html>
 <html lang="uk">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Список товарів</title>
-  <link rel="stylesheet" href="style.css" />
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Список завдань</title>
+<style>
+/* ================================================
+   СКИДАННЯ СТИЛІВ
+   Прибираємо відступи та встановлюємо box-sizing
+   для всіх елементів на сторінці
+   ================================================ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* ================================================
+   CSS-ЗМІННІ (кольори, розміри)
+   Визначаємо один раз — використовуємо скрізь.
+   Щоб змінити колір акценту — достатньо змінити
+   лише --accent тут
+   ================================================ */
+:root {
+  --bg:     #f5f5f0; /* колір фону сторінки        */
+  --white:  #ffffff; /* колір карток завдань        */
+  --text:   #222;    /* основний колір тексту       */
+  --muted:  #888;    /* сірий текст (дати, підписи) */
+  --accent: #3b5bdb; /* синій — кнопка "Додати"     */
+  --danger: #e03131; /* червоний — кнопка видалення */
+  --green:  #2f9e44; /* зелений — кнопка збереження */
+  --border: #ddd;    /* колір рамок                 */
+  --radius: 8px;     /* заокруглення кутів          */
+}
+
+/* ================================================
+   ЗАГАЛЬНІ СТИЛІ СТОРІНКИ
+   ================================================ */
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  padding: 2rem 1rem; /* відступи зверху/знизу і по боках */
+}
+
+/* Центруємо контент і обмежуємо ширину */
+.container { max-width: 600px; margin: 0 auto; }
+
+h1 { font-size: 1.8rem; font-weight: 700; margin-bottom: .25rem; }
+.subtitle { color: var(--muted); font-size: .9rem; margin-bottom: 1.5rem; }
+
+/* ================================================
+   ФОРМА ДОДАВАННЯ ЗАВДАННЯ
+   Рядок: [поле вводу] [кнопка Додати]
+   ================================================ */
+.add-row { display: flex; gap: .5rem; margin-bottom: 1rem; }
+
+.add-row input {
+  flex: 1; /* займає весь вільний простір */
+  padding: .65rem .9rem;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  font-size: .95rem;
+  font-family: inherit;
+  background: var(--white);
+  outline: none;
+  transition: border-color .2s; /* плавна зміна рамки при фокусі */
+}
+/* Рамка стає синьою коли поле активне */
+.add-row input:focus { border-color: var(--accent); }
+
+/* ================================================
+   ЗАГАЛЬНІ СТИЛІ КНОПОК
+   .btn       — базова кнопка
+   .btn-primary — синя (Додати)
+   .btn-danger  — червона (Видалити)
+   .btn-save    — зелена (Зберегти при редагуванні)
+   .btn-sm      — маленька версія кнопки
+   ================================================ */
+.btn {
+  padding: .65rem 1.1rem;
+  border: none;
+  border-radius: var(--radius);
+  font-size: .9rem;
+  font-family: inherit;
+  cursor: pointer;
+  font-weight: 500;
+  transition: opacity .15s, transform .1s;
+}
+.btn:hover  { opacity: .88; }               /* трохи прозоріє при наведенні */
+.btn:active { transform: scale(.97); }      /* "натискання" при кліку */
+.btn-primary { background: var(--accent); color: #fff; }
+.btn-danger  { background: var(--danger); color: #fff; }
+.btn-save    { background: var(--green);  color: #fff; }
+.btn-sm      { padding: .35rem .7rem; font-size: .8rem; }
+
+/* ================================================
+   ПАНЕЛЬ СОРТУВАННЯ
+   Рядок кнопок: ↑ Дата | ↓ Дата | Стан | ...
+   ================================================ */
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;  /* переносяться на новий рядок на маленьких екранах */
+  gap: .4rem;
+  margin-bottom: 1.2rem;
+  align-items: center;
+}
+.toolbar label {
+  font-size: .78rem;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  margin-right: .2rem;
+}
+/* Кнопки сортування — заокруглені "таблетки" */
+.sort-btn {
+  padding: .3rem .75rem;
+  border: 1.5px solid var(--border);
+  border-radius: 20px;
+  background: var(--white);
+  font-size: .8rem;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all .15s;
+}
+.sort-btn:hover  { border-color: var(--accent); color: var(--accent); }
+/* Активна кнопка сортування стає синьою */
+.sort-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+/* ================================================
+   ПОРОЖНІЙ СТАН
+   Відображається коли список завдань пустий
+   ================================================ */
+.empty { text-align: center; padding: 3rem; color: var(--muted); font-size: .95rem; }
+
+/* ================================================
+   СПИСОК ЗАВДАНЬ
+   Вертикальний список карток
+   ================================================ */
+#task-list { list-style: none; display: flex; flex-direction: column; gap: .5rem; }
+
+/* ================================================
+   КАРТКА ЗАВДАННЯ
+   Містить: [чекбокс] [текст + дата] [кнопки]
+   ================================================ */
+.task {
+  background: var(--white);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  padding: .75rem 1rem;
+  display: flex;
+  align-items: flex-start;
+  gap: .7rem;
+  animation: fadeIn .25s ease; /* анімація появи при додаванні */
+}
+/* Виконане завдання — сірий фон */
+.task.done { background: #f9f9f9; }
+
+/* ── АНІМАЦІЇ ── */
+
+/* Поява нового завдання — падає зверху */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+/* Видалення завдання — зникає і стискається */
+@keyframes fadeOut {
+  from { opacity: 1; max-height: 100px; }
+  to   { opacity: 0; max-height: 0; padding: 0; margin: 0; overflow: hidden; }
+}
+/* Клас .removing додається JS перед видаленням */
+.task.removing { animation: fadeOut .25s ease forwards; }
+
+/* ================================================
+   ЕЛЕМЕНТИ ВСЕРЕДИНІ КАРТКИ
+   ================================================ */
+
+/* Чекбокс — квадратик зліва */
+.task input[type=checkbox] {
+  width: 1.1rem; height: 1.1rem;
+  accent-color: var(--accent); /* колір галочки */
+  cursor: pointer;
+  flex-shrink: 0;   /* не стискається */
+  margin-top: .15rem;
+}
+
+/* Блок з текстом і датою — займає весь вільний простір */
+.task-body { flex: 1; min-width: 0; }
+
+/* Текст завдання */
+.task-text { font-size: .95rem; line-height: 1.4; word-break: break-word; }
+
+/* Текст виконаного завдання — перекреслений і сірий */
+.task.done .task-text { text-decoration: line-through; color: var(--muted); }
+
+/* Дата створення/оновлення під текстом */
+.task-meta { font-size: .72rem; color: var(--muted); margin-top: .25rem; }
+
+/* Поле вводу при редагуванні — замінює текст завдання */
+.task-edit-input {
+  width: 100%;
+  font-family: inherit;
+  font-size: .95rem;
+  border: none;
+  border-bottom: 2px solid var(--accent); /* тільки нижня рамка */
+  outline: none;
+  background: transparent;
+  padding: .1rem 0;
+}
+
+/* Кнопки дій (✏️ і 🗑) — праворуч */
+.task-actions { display: flex; gap: .3rem; flex-shrink: 0; }
+
+/* Лічильник завдань над списком */
+.counter { font-size: .82rem; color: var(--muted); margin-bottom: .6rem; }
+</style>
 </head>
 <body>
 
-<header>
-  <h1>Список товарів</h1>
-  <span id="total-price">Загальна вартість: 0 ₴</span>
-</header>
+<!-- ================================================
+     HTML-РОЗМІТКА СТОРІНКИ
+     ================================================ -->
+<div class="container">
+  <h1>📋 Завдання</h1>
+  <p class="subtitle">Простий список справ</p>
 
-<main>
+  <!-- Форма додавання: novalidate щоб контролювати валідацію вручну через JS -->
+  <form id="add-form" class="add-row" novalidate>
+    <!-- required, minlength, maxlength — HTML5-валідація -->
+    <input id="task-input" type="text" placeholder="Введіть нове завдання..."
+           required minlength="2" maxlength="200" autocomplete="off"/>
+    <button type="submit" class="btn btn-primary">Додати</button>
+  </form>
 
-  <!-- ФІЛЬТРИ ТА СОРТУВАННЯ -->
+  <!-- Панель сортування: data-sort зберігає тип сортування -->
   <div class="toolbar">
-    <div class="toolbar-row">
-      <span class="toolbar-label">Фільтр:</span>
-      <div id="filter-buttons"></div>
-    </div>
-    <div class="toolbar-row">
-      <span class="toolbar-label">Сортування:</span>
-      <button data-sort="price">За ціною</button>
-      <button data-sort="createdAt">За датою створення</button>
-      <button data-sort="updatedAt">За датою оновлення</button>
-      <button id="reset-sort">Скинути</button>
-    </div>
+    <label>Сортування:</label>
+    <button class="sort-btn" data-sort="date-asc">↑ Дата</button>
+    <button class="sort-btn" data-sort="date-desc">↓ Дата</button>
+    <button class="sort-btn" data-sort="status">Стан</button>
+    <button class="sort-btn" data-sort="updated">Оновлення</button>
+    <button class="sort-btn" data-sort="none">✕ Скинути</button>
   </div>
 
-  <!-- ПОРОЖНІЙ СТАН -->
-  <p id="empty-msg">Наразі список товарів пустий. Додайте новий товар.</p>
+  <!-- Лічильник: заповнюється через JS -->
+  <div class="counter" id="counter"></div>
 
-  <!-- СПИСОК КАРТОК -->
-  <div id="product-list"></div>
+  <!-- Порожній стан: видно/ховається через JS -->
+  <div class="empty" id="empty">Список порожній. Додайте перше завдання!</div>
 
-  <!-- КНОПКА ДОДАТИ -->
-  <button id="add-btn">+ Додати новий товар</button>
-
-</main>
-
-<!-- МОДАЛЬНЕ ВІКНО -->
-<div class="modal-overlay" id="modal">
-  <div class="modal">
-    <h2 id="modal-title">Новий товар</h2>
-    <form id="product-form" novalidate>
-      <input type="hidden" id="edit-id" />
-
-      <div class="form-group">
-        <label for="f-name">Назва товару</label>
-        <input type="text" id="f-name" placeholder="Назва" required minlength="2" maxlength="80" />
-      </div>
-
-      <div class="form-group">
-        <label for="f-price">Ціна (₴)</label>
-        <input type="number" id="f-price" placeholder="0.00" required min="0.01" step="0.01" />
-      </div>
-
-      <div class="form-group">
-        <label for="f-category">Категорія</label>
-        <select id="f-category" required>
-          <option value="" disabled selected>Оберіть категорію</option>
-          <option>Електроніка</option>
-          <option>Одяг</option>
-          <option>Книги</option>
-          <option>Меблі</option>
-          <option>Спорт</option>
-        </select>
-      </div>
-
-      <div class="form-group">
-        <label for="f-image">URL зображення</label>
-        <input type="url" id="f-image" placeholder="https://..." required />
-      </div>
-
-      <div class="modal-actions">
-        <button type="button" id="cancel-btn">Скасувати</button>
-        <button type="submit" id="submit-btn">Додати</button>
-      </div>
-    </form>
-  </div>
+  <!-- Список завдань: картки додаються через JS -->
+  <ul id="task-list"></ul>
 </div>
 
-<!-- SNACKBAR -->
-<div id="snackbar"></div>
+<script>
+// ================================================
+// ЧИСТІ ФУНКЦІЇ-ХЕЛПЕРИ (pure functions)
+// Не змінюють зовнішній стан, завжди повертають
+// новий результат на основі вхідних даних
+// ================================================
 
-<script src="script.js"></script>
+// Генерує унікальний id на основі часу + випадкового рядка
+const uid = () => Date.now() + Math.random().toString(36).slice(2);
+
+// Повертає поточний час у форматі ISO (рядок)
+const now = () => new Date().toISOString();
+
+// Форматує ISO-дату в читабельний вигляд: "08 кві, 14:30"
+const fmt = iso => new Date(iso).toLocaleString('uk-UA', {
+  day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit'
+});
+
+// ── Функції для роботи із завданнями ──
+
+// Створює нове завдання-обʼєкт з тексту
+const createTask = text => ({
+  id: uid(),
+  text: text.trim(),
+  done: false,
+  createdAt: now(),
+  updatedAt: now()
+});
+
+// Перемикає стан done (true/false), повертає новий обʼєкт
+const toggleTask = t => ({ ...t, done: !t.done, updatedAt: now() });
+
+// Оновлює текст завдання, повертає новий обʼєкт
+const editTask = (t, text) => ({ ...t, text: text.trim(), updatedAt: now() });
+
+// Видаляє завдання з масиву за id, повертає новий масив
+const removeTask = (tasks, id) => tasks.filter(t => t.id !== id);
+
+// Додає нове завдання на початок масиву, повертає новий масив
+const addTask = (tasks, task) => [task, ...tasks];
+
+// ================================================
+// СОРТУВАННЯ
+// Обʼєкт з функціями-компараторами для кожного типу
+// ================================================
+const sorters = {
+  'date-asc':  (a, b) => new Date(a.createdAt) - new Date(b.createdAt), // старіші вгорі
+  'date-desc': (a, b) => new Date(b.createdAt) - new Date(a.createdAt), // новіші вгорі
+  'status':    (a, b) => Number(a.done) - Number(b.done),               // невиконані вгорі
+  'updated':   (a, b) => new Date(b.updatedAt) - new Date(a.updatedAt), // нещодавно змінені вгорі
+  'none': null, // без сортування
+};
+
+// Повертає відсортований масив (або копію без сортування)
+const sortTasks = (tasks, key) =>
+  sorters[key] ? [...tasks].sort(sorters[key]) : [...tasks];
+
+// ================================================
+// СТАН ЗАСТОСУНКУ
+// Один обʼєкт state зберігає всі дані
+// ================================================
+let state = {
+  tasks: [],        // масив завдань
+  sortKey: 'none'   // поточний тип сортування
+};
+
+// Оновлює стан і перемальовує сторінку
+// patch — обʼєкт з полями які треба змінити
+const setState = patch => {
+  state = { ...state, ...patch }; // merge: стара копія + нові поля
+  render(); // перемалювати DOM
+};
+
+// ================================================
+// ПОСИЛАННЯ НА DOM-ЕЛЕМЕНТИ
+// Отримуємо один раз і зберігаємо в константи
+// ================================================
+const $list    = document.getElementById('task-list'); // <ul> зі списком
+const $empty   = document.getElementById('empty');     // блок "список порожній"
+const $counter = document.getElementById('counter');   // лічильник
+const $form    = document.getElementById('add-form');  // форма додавання
+const $input   = document.getElementById('task-input');// поле вводу
+
+// RENDER — головна функція відмалювання
+// Викликається кожного разу після зміни стану
+
+const render = () => {
+  const sorted = sortTasks(state.tasks, state.sortKey);
+  const total  = state.tasks.length;
+  const done   = state.tasks.filter(t => t.done).length;
+
+  // Показуємо/ховаємо блок "порожній список"
+  $empty.style.display = total === 0 ? 'block' : 'none';
+
+  // Оновлюємо лічильник
+  $counter.textContent = total > 0 ? `Всього: ${total} · Виконано: ${done}` : '';
+
+  // Підсвічуємо активну кнопку сортування
+  document.querySelectorAll('.sort-btn').forEach(b =>
+    b.classList.toggle('active', b.dataset.sort === state.sortKey)
+  );
+
+  // Перебудовуємо список: очищаємо і додаємо картки заново
+  $list.innerHTML = '';
+  sorted.forEach(t => $list.appendChild(buildItem(t)));
+};
+
+// BUILD ITEM — будує DOM-елемент картки завдання
+// Приймає обʼєкт task, повертає <li>
+
+const buildItem = task => {
+  // Створюємо <li> і додаємо клас done якщо виконане
+  const li = document.createElement('li');
+  li.className = 'task' + (task.done ? ' done' : '');
+  li.dataset.id = task.id;
+
+  // Чекбокс — при зміні перемикає стан завдання
+  const chk = document.createElement('input');
+  chk.type = 'checkbox';
+  chk.checked = task.done;
+  chk.addEventListener('change', () =>
+    setState({ tasks: state.tasks.map(t => t.id === task.id ? toggleTask(t) : t) })
+  );
+
+  // Блок з текстом і датою
+  const body = document.createElement('div');
+  body.className = 'task-body';
+
+  const txt = document.createElement('div');
+  txt.className = 'task-text';
+  txt.textContent = task.text;
+
+  // Показуємо дату створення, і дату оновлення якщо відрізняється
+  const meta = document.createElement('div');
+  meta.className = 'task-meta';
+  meta.textContent = '📌 ' + fmt(task.createdAt) +
+    (task.createdAt !== task.updatedAt ? '  · 🔄 ' + fmt(task.updatedAt) : '');
+
+  body.append(txt, meta);
+
+  // Блок кнопок дій
+  const acts = document.createElement('div');
+  acts.className = 'task-actions';
+
+  // Кнопка редагування — відкриває inline-редактор
+  const editBtn = document.createElement('button');
+  editBtn.className = 'btn btn-sm';
+  editBtn.style.cssText = 'background:#868e96;color:#fff';
+  editBtn.textContent = '✏️';
+  editBtn.addEventListener('click', () => startEdit(task.id, li, txt, acts, meta));
+
+  // Кнопка видалення — запускає анімацію, потім видаляє зі стану
+  const delBtn = document.createElement('button');
+  delBtn.className = 'btn btn-sm btn-danger';
+  delBtn.textContent = '🗑';
+  delBtn.addEventListener('click', () => {
+    li.classList.add('removing'); // запускаємо CSS-анімацію fadeOut
+    // після завершення анімації — видаляємо зі стану
+    li.addEventListener('animationend', () =>
+      setState({ tasks: removeTask(state.tasks, task.id) }), { once: true }
+    );
+  });
+
+  acts.append(editBtn, delBtn);
+  li.append(chk, body, acts);
+  return li;
+};
+
+// START EDIT — вмикає режим редагування картки
+// Замінює текст на поле вводу прямо в картці
+
+const startEdit = (id, li, txtEl, acts, meta) => {
+  // Якщо вже редагується — нічого не робимо
+  if (li.querySelector('.task-edit-input')) return;
+
+  // Ховаємо текст, показуємо поле вводу замість нього
+  txtEl.style.display = 'none';
+
+  const inp = document.createElement('input');
+  inp.type = 'text';
+  inp.className = 'task-edit-input';
+  inp.value = txtEl.textContent; // починаємо з поточного тексту
+  li.querySelector('.task-body').insertBefore(inp, meta);
+  inp.focus();
+
+  // Кнопка збереження — зʼявляється зліва від ✏️ і 🗑
+  const saveBtn = document.createElement('button');
+  saveBtn.className = 'btn btn-sm btn-save';
+  saveBtn.textContent = '✔';
+  acts.prepend(saveBtn);
+
+  // Зберегти зміни
+  const commit = () => {
+    const val = inp.value.trim();
+    if (val.length < 2) return; // мінімум 2 символи
+    setState({ tasks: state.tasks.map(t => t.id === id ? editTask(t, val) : t) });
+  };
+
+  saveBtn.addEventListener('click', commit);
+  inp.addEventListener('keydown', e => {
+    if (e.key === 'Enter')  commit();                                        // Enter — зберегти
+    if (e.key === 'Escape') {                                                // Escape — скасувати
+      txtEl.style.display = '';
+      inp.remove();
+      saveBtn.remove();
+    }
+  });
+};
+
+
+// ОБРОБНИКИ ПОДІЙ
+
+// Сабміт форми — додаємо нове завдання
+$form.addEventListener('submit', e => {
+  e.preventDefault(); // скасовуємо стандартну відправку форми
+  const val = $input.value.trim();
+  if (val.length < 2) return; // валідація: мінімум 2 символи
+  setState({ tasks: addTask(state.tasks, createTask(val)) });
+  $input.value = ''; // очищаємо поле
+  $input.focus();    // повертаємо фокус
+});
+
+// Кнопки сортування — оновлюємо sortKey у стані
+document.querySelectorAll('.sort-btn').forEach(b =>
+  b.addEventListener('click', () => setState({ sortKey: b.dataset.sort }))
+);
+
+render();
+</script>
 </body>
 </html>
