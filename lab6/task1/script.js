@@ -77,7 +77,12 @@ const updateProduct = (list, id, data) =>
   list.map(p =>
     p.id !== id
       ? p
-      : { ...p, name: data.name, price: +data.price, category: data.category, image: data.image, updatedAt: getDate() }
+      : { ...p, name: data.name, 
+                price: +data.price, 
+                category: data.category, 
+                image: data.image, 
+                updatedAt: getDate() 
+              }
   );
 
 const deleteProduct = (list, id) => list.filter(p => p.id !== id);
@@ -292,5 +297,4 @@ document.getElementById('reset-sort').addEventListener('click', () => {
   render();
 });
 
-/* ── СТАРТ ───────────────────────────────── */
 render();
